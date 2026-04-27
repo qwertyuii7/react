@@ -12,7 +12,7 @@ function App() {
   function Addtodo() {
     setTodos([...Todos, {
       title: document.getElementById("title").value,
-      description: document.getElementById("description").value
+      description: document.getElementById("description").value-
     }])
   }
 
