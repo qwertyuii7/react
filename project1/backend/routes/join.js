@@ -17,13 +17,16 @@ joinrouter.post("/join", async function (req, res) {
             customerName,
             shopId
         })
-        if(existing){
-            return res.status(400).json({ message: "Already in queue" });  
+        if (existing) {
+            return res.status(400).json({ message: "Already in queue" });
         }
-        
+
         const entry = new JoinQueue_model({
             customerName,
-            shopId
+            shopId,
+            status: "waiting",
+            joinedAt: new Date()
+
         })
         const saved = await entry.save();
 
@@ -34,7 +37,7 @@ joinrouter.post("/join", async function (req, res) {
     } catch (e) {
         res.status(500).json({
             message: "Error joining queue",
-            error: err.message
+            error: e.message
         });
 
     }
