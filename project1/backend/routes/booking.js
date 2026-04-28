@@ -7,13 +7,8 @@ const { Booking_model } = require("../models/queuedb")
 const { shop_model } = require("../models/queuedb")
 
 bookingrouter.post("/create_booking", async function (req, res) {
-
-    //creating a frewsh booking here 
-
     try {
-
         const { shopId, customerName, slot, date, status } = req.body;
-
 
         if (!shopId || !customerName || !slot || !date) {
             return res.status(400).json({
@@ -21,45 +16,48 @@ bookingrouter.post("/create_booking", async function (req, res) {
             });
         }
 
+        // step 1: check if shop actually exists using its _id
+        const shopExists = await shop_model.findById(shopId);
 
-        const existing = Booking_model.findOne({
-            shopId,
-            customerName,
-            "slot.from":slot.from,
-            "slot.to":slot.to,
-            status: { $ne: "cancelled" }
-
-        });
-
-        if(existing){
-            return res.status(400).json({
-                message:"this slot is already booked"
-            })
-
+        if (!shopExists) {
+            return res.status(404).json({
+                message: "Shop not found"
+            });
         }
 
+        // step 2: check for duplicate booking
+        const existing = await Booking_model.findOne({
+            shopId,
+            customerName,
+            "slot.from": slot.from,
+            "slot.to": slot.to,
+            status: { $ne: "cancelled" }
+        });
 
-        const booking_slot = new Booking_model({
-            shopid,
+        if (existing) {
+            return res.status(400).json({
+                message: "This slot is already booked"
+            });
+        }
+
+        // step 3: create the booking
+        const booking_slot = await Booking_model.create({
+            shopId,        
             customerName,
             slot,
             date,
-            status
+            status: status || "pending"
+        });
 
-        })
-        const saved = await booking_slot.save();
+        res.status(201).json({ message: "Booking done!", data: booking_slot });
 
-        res.status(201).json({ message: "booking done!", data: saved })
     } catch (error) {
         res.status(500).json({
-            message: "error creating data!",
+            message: "Error creating booking!",
             error: error.message
-        })
-
+        });
     }
-
-})
-
+});
 
 
 module.exports = {
