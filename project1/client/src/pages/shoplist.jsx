@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getshops, getShops } from "../api/api";
+import { getshops} from "../api/api";
 import { Link } from "react-router-dom";
 
 
