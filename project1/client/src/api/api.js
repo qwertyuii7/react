@@ -43,3 +43,17 @@ export const create_booking = async(data) =>{
     })
     return res.json()
 }
+
+export const get_queue = async (shopId) => {
+    const res = await fetch(`${BASE_URL}/queue?shopId=${shopId}`)
+    return res.json()
+}
+
+export const nextCustomer = async (shopId) => {
+  const res = await fetch(`${BASE_URL}/queue/next`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ shopId })
+  });
+  return res.json();
+};
