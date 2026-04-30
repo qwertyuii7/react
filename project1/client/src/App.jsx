@@ -2,16 +2,21 @@
 import { useEffect, useState } from "react";
 
 import './App.css'
-const [queue ,setqueue ] =useState([]);
-const [name ,setname ]= useState([""]);
-const shopId ="123";
+import { api } from '../src/api/api'
 
 function App() {
+  async function mains() {
+    const data = await api.getShops()
+    console.log(data)
+    
+  }
+  mains();
+  
   
 
   return (
     <>
-    
+
     
     
 
