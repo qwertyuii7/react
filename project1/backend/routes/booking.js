@@ -16,7 +16,7 @@ bookingrouter.post("/create_booking", async function (req, res) {
             });
         }
 
-        // step 1: check if shop actually exists using its _id
+        
         const shopExists = await shop_model.findById(shopId);
 
         if (!shopExists) {
@@ -25,7 +25,7 @@ bookingrouter.post("/create_booking", async function (req, res) {
             });
         }
 
-        // step 2: check for duplicate booking
+        
         const existing = await Booking_model.findOne({
             shopId,
             customerName,
@@ -40,7 +40,7 @@ bookingrouter.post("/create_booking", async function (req, res) {
             });
         }
 
-        // step 3: create the booking
+        
         const booking_slot = await Booking_model.create({
             shopId,        
             customerName,
