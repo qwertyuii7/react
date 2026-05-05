@@ -27,10 +27,13 @@ function Shoppage() {
         fetchqueue(); 
         const interval = setInterval(fetchqueue, 5000);
         return () => clearInterval(interval);
+
+        
     }, [shopId]) 
     return (
         <div>
             <h2>Shop Queue</h2>
+            <h1>booking and registration</h1>
             <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}

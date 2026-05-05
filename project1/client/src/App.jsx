@@ -16,6 +16,10 @@ function App() {
 
   return (
     <>
+    hello world!
+
+    routes will be here in sometime!
+    keep updated!
 
     
     
